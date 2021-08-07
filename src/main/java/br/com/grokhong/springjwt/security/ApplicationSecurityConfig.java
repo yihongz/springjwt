@@ -36,7 +36,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/api/**").hasRole(ApplicationUserRole.STUDENT.name())
         .anyRequest().authenticated().and().formLogin()
         .loginPage("/login").permitAll()
-        .defaultSuccessUrl("/courses",true);
+        .defaultSuccessUrl("/courses",true)
+        .and()
+        .rememberMe(); // defaults to 2 weeks
     }
 
     @Override

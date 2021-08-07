@@ -2,13 +2,15 @@ package br.com.grokhong.springjwt.auth;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class ApplicationUser implements UserDetails {
 
-    private final List<? extends GrantedAuthority> grantedAuthorities;
+    private final Set<? extends GrantedAuthority> grantedAuthorities;
     private final String username;
     private final String password;
     private final boolean isAccountNonExpired;
@@ -16,7 +18,7 @@ public class ApplicationUser implements UserDetails {
     private final boolean isCredentialsNonExpired;
     private final boolean isEnable;
 
-    public ApplicationUser(List<? extends GrantedAuthority> grantedAuthorities, String username, String password,
+    public ApplicationUser(String username, String password, Set<? extends GrantedAuthority> grantedAuthorities,
             boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired,
             boolean isEnable) {
         this.grantedAuthorities = grantedAuthorities;

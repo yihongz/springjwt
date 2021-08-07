@@ -35,7 +35,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
         .antMatchers("/api/**").hasRole(ApplicationUserRole.STUDENT.name())
         .anyRequest().authenticated().and().formLogin()
-        .loginPage("/login").permitAll();
+        .loginPage("/login").permitAll()
+        .defaultSuccessUrl("/courses",true);
     }
 
     @Override

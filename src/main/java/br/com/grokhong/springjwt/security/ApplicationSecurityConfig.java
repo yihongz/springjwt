@@ -13,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import br.com.grokhong.springjwt.auth.ApplicationUserService;
+import br.com.grokhong.springjwt.jwt.JwtTokenVerifier;
 import br.com.grokhong.springjwt.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 
 @Configuration
@@ -36,6 +37,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager()))
+        .addFilterAfter(new JwtTokenVerifier(), JwtUsernameAndPasswordAuthenticationFilter.class)
         .authorizeRequests()
         .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
         .antMatchers("/api/**").hasRole(ApplicationUserRole.STUDENT.name())

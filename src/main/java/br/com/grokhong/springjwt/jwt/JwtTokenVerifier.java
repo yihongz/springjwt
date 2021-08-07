@@ -1,6 +1,8 @@
 package br.com.grokhong.springjwt.jwt;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,7 +32,6 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
             throws ServletException, IOException {
         
         String authorizationHeader = request.getHeader("Authorization");
-        String secretKey = "securesecuresecuresecuresecuresecuresecuresecuresecure";
 
         if(Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -40,6 +41,8 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
         String token = authorizationHeader.replace("Bearer ", "");
 
         try {
+            String secretKey = "securesecuresecuresecuresecuresecuresecuresecuresecure";
+
             Jws<Claims> claimsJwts = Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes())).build().parseClaimsJws(token);
             
             Claims body = claimsJwts.getBody();
@@ -57,8 +60,10 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (JwtException e) {
-            throw new IllegalStateException(String.format("Token %s cannot be truest.", token));
+            throw new IllegalStateException(String.format("Token %s cannot be trusted.", token));
         }
+
+        filterChain.doFilter(request, response);
     }
 
 }
